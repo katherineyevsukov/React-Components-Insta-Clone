@@ -17,8 +17,12 @@ const App = () => {
   // Create a state called `posts` to hold the array of post objects, **initializing to dummyData**.
   const [posts, setPosts] = useState(dummyData)
   const [searchTerm, setSearchTerm] = useState('')
+  const [comment, setComment] = useState('')
+  const [user, setUser] = useState('')
   // This state is the source of truth for the data inside the app. You won't be needing dummyData anymore.
   // To make the search bar work (which is stretch) we'd need another state to hold the search term.
+  console.log('comment', comment)
+  console.log('func1',setComment)
 
   const getFilteredPosts = () => {
   const filteredPosts= posts.filter(post => {
@@ -51,11 +55,24 @@ const App = () => {
     setPosts(updatedPosts)
   };
 
+  const addComment = postId =>{
+    const updatedComments = posts.map(post => {
+    if (postId === post.id){
+      post.comments.push({username: user, text: comment})
+      return post
+      // return {...post, comments: post.comments.push(comment)}
+    } else {
+      return post
+    }
+  })
+  setPosts(updatedComments)
+}
+
   return (
     <div className='App'>
       
       <SearchBar setSearchTerm={setSearchTerm} />
-      <Posts posts={getFilteredPosts()} likePost={likePost} />
+      <Posts posts={getFilteredPosts()} likePost={likePost} setComment={setComment} addComment={addComment} setUser={setUser} />
       {/* Add SearchBar and Posts here to render them */}
       
       {/* Check the implementation of each component, to see what props they require, if any! */}
